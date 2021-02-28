@@ -41,7 +41,7 @@ pipeline {
                 echo "			  Construyendo la imagen de "
                 sh 'docker build -t $Imagen .'
                 //echo "			Tageando la imagen para poderla subir posteriormente"
-                //docker tag $Imagen franciscomelero/$Imagen         
+                //docker tag $Imagen javimontiel98/$Imagen         
                 echo "			Subiendo la imagen repositorio de docker hub"
                 sh' docker push $Imagen:latest'
                 echo "			Borrando la imagen en modo local, aunque la dejamos para que no tarde tanto"
@@ -53,14 +53,12 @@ pipeline {
               expression { false == true }
             }
             steps {
-                echo "			  Enviando el fichero docker-compose "           
-                sh 'scp -i /home/jenkins/keyHLC docker-compose.yml root@51.210.148.46:/root/HLC/docker/docker-compose.yml'
                 echo "			  Descargando imagen nueva en el servidor de producción"
-                sh 'ssh -i /home/jenkins/keyHLC root@51.210.148.46 docker pull $Imagen'
+                sh docker pull $Imagen'
                 echo "Parando servicios "
-                sh 'ssh -i /home/jenkins/keyHLC root@51.210.148.46 docker-compose -f /root/HLC/docker/docker-compose.yml down'
+                sh docker-compose -f /var/lib/jenkins/workspace/P7Jenkins/docker-compose.yml down
                 echo "           Arrancando nueva imagen "
-                sh 'ssh -i /home/jenkins/keyHLC root@51.210.148.46 docker-compose -f /root/HLC/docker/docker-compose.yml up -d'
+                sh  docker-compose -f /var/lib/jenkins/workspace/docker-compose.yml up -d
             }
           }  
         }   
