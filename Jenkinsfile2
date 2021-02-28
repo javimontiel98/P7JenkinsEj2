@@ -44,8 +44,7 @@ pipeline {
                 //docker tag $Imagen javimontiel98/$Imagen         
                 echo "			Subiendo la imagen repositorio de docker hub"
                 sh' docker push $Imagen:latest'
-                echo "			Borrando la imagen en modo local, aunque la dejamos para que no tarde tanto"
-                sh 'docker rmi $Imagen:latest'
+             
             }
         }
         stage('Desplegando un único servidor') {
